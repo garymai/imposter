@@ -385,6 +385,7 @@ export default function Lobby() {
         isOpen={showQR}
         onClose={() => setShowQR(false)}
         roomCode={gameState.code}
+        serverIp={gameState.serverIp}
       />
     </div>
   );

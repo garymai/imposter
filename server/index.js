@@ -4,6 +4,7 @@ const { Server } = require('socket.io');
 const path = require('path');
 const cors = require('cors');
 const { registerSocketHandlers } = require('./socketHandlers');
+const { getLocalIpAddress } = require('./networkUtils');
 
 const app = express();
 const server = http.createServer(app);
@@ -29,6 +30,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: Date.now() });
 });
 
+// API network info endpoint (returns host LAN IP for mobile clients)
+app.get('/api/network-info', (req, res) => {
+  res.json({
+    localIp: getLocalIpAddress(),
+    port: PORT
+  });
+});
+
 // Serve frontend in production if built
 const clientDistPath = path.join(__dirname, '../client/dist');
 app.use(express.static(clientDistPath));
@@ -44,5 +53,10 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🎮 Imposter Game Server listening on http://0.0.0.0:${PORT}`);
+  const localIp = getLocalIpAddress();
+  console.log(`🎮 Imposter Game Server running at:`);
+  console.log(`   - Local:  http://localhost:${PORT}`);
+  if (localIp && localIp !== 'localhost') {
+    console.log(`   - Network: http://${localIp}:${PORT}`);
+  }
 });

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { getLocalIpAddress } = require('./networkUtils');
 
 // Load curated words
 const categoriesData = JSON.parse(
@@ -516,6 +517,7 @@ class RoomManager {
       secretWord: showAllSecrets ? room.currentWord : null,
       winner: room.winner,
       winReason: room.winReason,
+      serverIp: getLocalIpAddress(),
       categories: categoriesData.map(c => ({ id: c.id, name: c.name, icon: c.icon }))
     };
   }
