@@ -17,7 +17,7 @@ export default function ClueRound() {
   const roleInfo = gameState?.roleInfo;
 
   return (
-    <div className="max-w-lg mx-auto p-4 min-h-screen flex flex-col justify-between">
+    <div className="max-w-lg mx-auto w-full p-4 min-h-[100dvh] flex flex-col justify-between">
       {/* Header Info */}
       <div>
         <div className="flex items-center justify-between gap-2 mb-4">
@@ -125,13 +125,13 @@ export default function ClueRound() {
         </div>
       </div>
 
-      {/* Control Actions */}
-      <div className="pt-4 mt-4 border-t border-slate-800 space-y-2">
+      {/* Control Actions (Sticky at bottom so always visible) */}
+      <div className="sticky bottom-0 z-20 bg-slate-950/95 backdrop-blur-md pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] border-t border-slate-800/80 -mx-4 px-4 space-y-2 shadow-[0_-10px_25px_rgba(0,0,0,0.6)]">
         {/* Next Turn button (visible to current speaker or host) */}
         {(isMyTurn || isHost) && (
           <button
             onClick={nextClue}
-            className="w-full py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg shadow-rose-500/25 flex items-center justify-center gap-2 active:scale-[0.99] transition"
+            className="w-full py-3.5 rounded-2xl font-bold text-base bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-lg shadow-rose-500/25 flex items-center justify-center gap-2 active:scale-[0.99] transition"
           >
             {isLastSpeaker ? (
               <>

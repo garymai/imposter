@@ -182,7 +182,7 @@ export default function Lobby() {
   const canStart = gameState.players.length >= minPlayers;
 
   return (
-    <div className="max-w-2xl mx-auto p-4 sm:p-6 min-h-screen flex flex-col justify-between">
+    <div className="max-w-2xl mx-auto w-full p-4 sm:p-6 min-h-[100dvh] flex flex-col justify-between">
       <div>
         {/* Top Bar: Room Code & Quick Actions */}
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 mb-6 shadow-xl relative overflow-hidden">
@@ -349,31 +349,31 @@ export default function Lobby() {
         )}
       </div>
 
-      {/* Action Footer */}
-      <div className="mt-4 pt-4 border-t border-slate-800">
+      {/* Action Footer (Sticky at bottom so always visible) */}
+      <div className="sticky bottom-0 z-20 bg-slate-950/95 backdrop-blur-md pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] border-t border-slate-800/80 -mx-4 px-4 sm:mx-0 sm:px-0 shadow-[0_-10px_25px_rgba(0,0,0,0.6)]">
         {isHost ? (
           <div>
             <button
               onClick={startGame}
               disabled={!canStart}
-              className={`w-full py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition shadow-xl ${
+              className={`w-full py-3.5 sm:py-4 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center gap-3 transition shadow-xl ${
                 canStart
                   ? 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-rose-500/25 active:scale-[0.99]'
                   : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50'
               }`}
             >
-              <Play className="w-6 h-6 fill-current" />
+              <Play className="w-5 h-5 fill-current" />
               <span>Start Game</span>
             </button>
             {!canStart && (
-              <p className="text-center text-xs text-amber-400 mt-2 font-medium">
+              <p className="text-center text-xs text-amber-400 mt-1.5 font-medium">
                 Need at least {minPlayers} players to start ({gameState.players.length}/{minPlayers} joined).
               </p>
             )}
           </div>
         ) : (
-          <div className="text-center py-4 bg-slate-900 border border-slate-800 rounded-2xl animate-pulse">
-            <p className="text-slate-400 text-sm font-medium">
+          <div className="text-center py-3 bg-slate-900/90 border border-slate-800 rounded-2xl animate-pulse">
+            <p className="text-slate-400 text-xs sm:text-sm font-medium">
               Waiting for the host to start the game...
             </p>
           </div>

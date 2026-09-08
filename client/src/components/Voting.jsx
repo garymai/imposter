@@ -44,7 +44,7 @@ export default function Voting() {
   const totalPlayers = players.length;
 
   return (
-    <div className="max-w-lg mx-auto p-4 min-h-screen flex flex-col justify-between">
+    <div className="max-w-lg mx-auto w-full p-4 min-h-[100dvh] flex flex-col justify-between">
       {/* Header */}
       <div>
         <div className="flex items-center justify-between mb-4">
@@ -164,10 +164,10 @@ export default function Voting() {
         )}
       </div>
 
-      {/* Submit Action */}
-      <div className="pt-4 border-t border-slate-800">
+      {/* Submit Action (Sticky at bottom so always visible) */}
+      <div className="sticky bottom-0 z-20 bg-slate-950/95 backdrop-blur-md pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] border-t border-slate-800/80 -mx-4 px-4 shadow-[0_-10px_25px_rgba(0,0,0,0.6)]">
         {submitted ? (
-          <div className="py-4 text-center rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center gap-2">
+          <div className="py-3.5 text-center rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center gap-2">
             <CheckCircle className="w-5 h-5" />
             <span>Ballot Submitted! Waiting for results...</span>
           </div>
@@ -175,7 +175,7 @@ export default function Voting() {
           <button
             onClick={handleConfirmVote}
             disabled={selectedIds.length !== requiredVotes}
-            className={`w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition shadow-xl ${
+            className={`w-full py-3.5 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition shadow-xl ${
               selectedIds.length === requiredVotes
                 ? 'bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-rose-500/25 active:scale-[0.99]'
                 : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/60'

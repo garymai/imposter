@@ -33,7 +33,7 @@ function GameContainer() {
   };
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
+    <div className="relative min-h-[100dvh] bg-slate-950 text-slate-100 flex flex-col justify-between overflow-x-hidden">
       {/* Offline Alert Bar */}
       {!isConnected && (
         <div className="bg-amber-500/90 text-slate-950 px-4 py-2 text-xs font-bold flex items-center justify-center gap-2 sticky top-0 z-50">
@@ -43,12 +43,7 @@ function GameContainer() {
       )}
 
       {/* Main Game Phase View */}
-      <main className="flex-1 w-full">{renderCurrentPhase()}</main>
-
-      {/* Subtle Game Footer */}
-      <footer className="py-3 text-center text-[11px] text-slate-600 border-t border-slate-900">
-        The Imposter Game • Online Multi-Device Room
-      </footer>
+      <main className="flex-1 w-full flex flex-col">{renderCurrentPhase()}</main>
     </div>
   );
 }

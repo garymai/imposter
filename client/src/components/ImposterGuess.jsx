@@ -27,7 +27,7 @@ export default function ImposterGuess() {
   if (!isImposter) {
     // Innocent view: waiting for imposter to guess
     return (
-      <div className="max-w-md mx-auto p-4 min-h-screen flex flex-col items-center justify-center text-center">
+      <div className="max-w-md mx-auto w-full p-4 min-h-[100dvh] flex flex-col items-center justify-center text-center">
         <div className="w-20 h-20 rounded-3xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-6 animate-pulse">
           <AlertTriangle className="w-10 h-10" />
         </div>
@@ -51,7 +51,7 @@ export default function ImposterGuess() {
 
   // Imposter view: Guess the word
   return (
-    <div className="max-w-md mx-auto p-4 min-h-screen flex flex-col justify-between">
+    <div className="max-w-md mx-auto w-full p-4 min-h-[100dvh] flex flex-col justify-between pb-[calc(1rem+env(safe-area-inset-bottom))]">
       <div>
         <div className="text-center pt-4 mb-6">
           <div className="w-16 h-16 mx-auto rounded-3xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-3 shadow-lg shadow-rose-950/50">

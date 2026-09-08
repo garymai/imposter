@@ -28,7 +28,7 @@ export default function Results() {
   }, []);
 
   return (
-    <div className="max-w-lg mx-auto p-4 min-h-screen flex flex-col justify-between">
+    <div className="max-w-lg mx-auto w-full p-4 min-h-[100dvh] flex flex-col justify-between">
       <div>
         {/* Victory Hero Banner */}
         <div
@@ -137,19 +137,19 @@ export default function Results() {
         </div>
       </div>
 
-      {/* Host Rematch Button */}
-      <div className="pt-4 border-t border-slate-800 pb-4">
+      {/* Host Rematch Button (Sticky at bottom so always visible) */}
+      <div className="sticky bottom-0 z-20 bg-slate-950/95 backdrop-blur-md pt-3 pb-[calc(1rem+env(safe-area-inset-bottom))] border-t border-slate-800/80 -mx-4 px-4 shadow-[0_-10px_25px_rgba(0,0,0,0.6)]">
         {isHost ? (
           <button
             onClick={playAgain}
-            className="w-full py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-xl shadow-rose-500/25 flex items-center justify-center gap-2 active:scale-[0.99] transition"
+            className="w-full py-3.5 sm:py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-xl shadow-rose-500/25 flex items-center justify-center gap-2 active:scale-[0.99] transition"
           >
             <RotateCcw className="w-5 h-5" />
             <span>Play Again (Same Room)</span>
           </button>
         ) : (
-          <div className="text-center py-4 bg-slate-900 border border-slate-800 rounded-2xl animate-pulse">
-            <p className="text-slate-400 text-sm font-medium">
+          <div className="text-center py-3 bg-slate-900 border border-slate-800 rounded-2xl animate-pulse">
+            <p className="text-slate-400 text-xs sm:text-sm font-medium">
               Waiting for the host to start another round...
             </p>
           </div>
