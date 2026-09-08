@@ -1,0 +1,25 @@
+{
+  "name": "imposter-app",
+  "version": "1.0.0",
+  "description": "Real-time online room-code Imposter party game",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "server": "node server/index.js",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "concurrently \"node server/index.js\" \"npm --prefix client run dev\"",
+    "build:client": "npm --prefix client run build",
+    "build": "npm run build:client",
+    "test:unit": "node server/test_room.js",
+    "test:e2e": "NODE_PATH=client/node_modules node server/test_e2e_simulation.js",
+    "test": "npm run test:unit && npm run test:e2e"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

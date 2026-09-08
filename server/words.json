@@ -1,0 +1,62 @@
+[
+  {
+    "id": "food",
+    "name": "Food & Drinks",
+    "icon": "🍕",
+    "words": [
+      "Pizza", "Sushi", "Hamburger", "Taco", "Ice Cream", "Pancakes", "Hot Dog", "Spaghetti",
+      "Donut", "Burrito", "Fried Chicken", "Sandwich", "Chocolate", "Coffee", "Boba Tea",
+      "Ramen", "Popcorn", "Waffles", "Guacamole", "Steak", "Cupcake", "French Fries", "Salad"
+    ]
+  },
+  {
+    "id": "animals",
+    "name": "Animals",
+    "icon": "🦁",
+    "words": [
+      "Lion", "Penguin", "Elephant", "Giraffe", "Kangaroo", "Dolphin", "Cheetah", "Panda",
+      "Octopus", "Sloth", "Koala", "Gorilla", "Zebra", "Flamingo", "Chameleon", "Owl",
+      "Shark", "Wolf", "Hedgehog", "Polar Bear", "Parrot", "Crocodile", "Tiger"
+    ]
+  },
+  {
+    "id": "places",
+    "name": "Places & Travel",
+    "icon": "✈️",
+    "words": [
+      "Airport", "Beach", "Amusement Park", "Museum", "Cinema", "Hospital", "School",
+      "Library", "Hotel", "Supermarket", "Gym", "Restaurant", "Subway Station", "Zoo",
+      "Campground", "Eiffel Tower", "Statue of Liberty", "Pyramids", "Space Station", "Castle"
+    ]
+  },
+  {
+    "id": "objects",
+    "name": "Everyday Objects",
+    "icon": "📦",
+    "words": [
+      "Smartphone", "Toothbrush", "Backpack", "Sunglasses", "Umbrella", "Headphones",
+      "Alarm Clock", "Microwave", "Key", "Wallet", "Sofa", "Flashlight", "Guitar",
+      "Scissors", "Water Bottle", "Sneakers", "Mirror", "Bicycle", "Candle", "Coffee Mug"
+    ]
+  },
+  {
+    "id": "movies_pop",
+    "name": "Movies & Pop Culture",
+    "icon": "🎬",
+    "words": [
+      "Spider-Man", "Harry Potter", "Batman", "Star Wars", "Barbie", "Shrek", "Titanic",
+      "Avengers", "The Lion King", "Jurassic Park", "Toy Story", "Minecraft", "Pokemon",
+      "Mario", "Frozen", "Stranger Things", "Squid Game", "Goku", "Sherlock Holmes"
+    ]
+  },
+  {
+    "id": "jobs",
+    "name": "Jobs & Occupations",
+    "icon": "💼",
+    "words": [
+      "Astronaut", "Firefighter", "Doctor", "Chef", "Detective", "Pilot", "Teacher",
+      "Magician", "Photographer", "Lifeguard", "Architect", "Scientist", "Dentist",
+      "Actor", "Farmer", "Musician", "Judge", "Software Engineer", "Mechanic"
+    ]
+  }
+]
