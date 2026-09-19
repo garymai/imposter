@@ -1,0 +1,492 @@
+[
+  {
+    "id": "morning_routine",
+    "category": "Daily Habits",
+    "icon": "☕",
+    "normalQuestion": "What is something you use or do first thing every morning?",
+    "imposterQuestion": "What is something you use or do right before going to sleep at night?"
+  },
+  {
+    "id": "packing_trip",
+    "category": "Travel",
+    "icon": "🏖️",
+    "normalQuestion": "What is an essential item you always pack for an overnight trip?",
+    "imposterQuestion": "What is an essential item you always bring for a full day at the beach?"
+  },
+  {
+    "id": "comfort_food",
+    "category": "Food & Dining",
+    "icon": "🍕",
+    "normalQuestion": "What is the ultimate comfort food when you are having a bad day?",
+    "imposterQuestion": "What is the best food to order while watching a big sports game with friends?"
+  },
+  {
+    "id": "worst_chore",
+    "category": "Home Life",
+    "icon": "🧹",
+    "normalQuestion": "What is the absolute worst household chore to do?",
+    "imposterQuestion": "What is the most exhausting exercise or activity at the gym?"
+  },
+  {
+    "id": "bad_first_date",
+    "category": "Social",
+    "icon": "💬",
+    "normalQuestion": "What is the worst mistake someone could make on a first date?",
+    "imposterQuestion": "What is the worst mistake someone could make during a formal job interview?"
+  },
+  {
+    "id": "dangerous_pet",
+    "category": "Animals",
+    "icon": "🦁",
+    "normalQuestion": "What animal would make the absolute worst indoor house pet?",
+    "imposterQuestion": "What animal would you be most terrified to bump into in the wilderness?"
+  },
+  {
+    "id": "movie_snack",
+    "category": "Snacks & Treats",
+    "icon": "🍿",
+    "normalQuestion": "What is the undisputed best movie theater snack?",
+    "imposterQuestion": "What is the undisputed best breakfast treat on a weekend morning?"
+  },
+  {
+    "id": "superpower_choice",
+    "category": "Hypothetical",
+    "icon": "⚡",
+    "normalQuestion": "What superpower would be the most convenient for everyday life?",
+    "imposterQuestion": "What superpower would make you the most unstoppable thief or spy?"
+  },
+  {
+    "id": "canceling_excuse",
+    "category": "Social",
+    "icon": "📱",
+    "normalQuestion": "What is the most common excuse people give to cancel weekend plans last-minute?",
+    "imposterQuestion": "What is the most common excuse people give when calling in sick to work?"
+  },
+  {
+    "id": "fashion_no_no",
+    "category": "Style & Events",
+    "icon": "👗",
+    "normalQuestion": "What is something you should definitely never wear to a formal wedding?",
+    "imposterQuestion": "What is something you should definitely never wear to a swimming pool or beach?"
+  },
+  {
+    "id": "million_dollars",
+    "category": "Money & Luxury",
+    "icon": "💰",
+    "normalQuestion": "What is the very first thing you would buy if you won a million dollars?",
+    "imposterQuestion": "What would you buy if you were handed an unlimited gift card for an electronics store?"
+  },
+  {
+    "id": "amazing_scent",
+    "category": "Senses",
+    "icon": "👃",
+    "normalQuestion": "What is something that has an undeniably amazing smell?",
+    "imposterQuestion": "What is something that has an undeniably delicious, savory taste?"
+  },
+  {
+    "id": "hotel_room_item",
+    "category": "Objects & Places",
+    "icon": "🏨",
+    "normalQuestion": "What is something you expect to find inside almost every standard hotel room?",
+    "imposterQuestion": "What is something you expect to find inside almost every modern office building?"
+  },
+  {
+    "id": "road_trip_must",
+    "category": "Travel",
+    "icon": "🚗",
+    "normalQuestion": "What is something that always makes a long road trip much better?",
+    "imposterQuestion": "What is something that always makes a long international flight much better?"
+  },
+  {
+    "id": "cool_vehicle",
+    "category": "Vehicles",
+    "icon": "🏎️",
+    "normalQuestion": "What vehicle would look the most badass or impressive to pull up in?",
+    "imposterQuestion": "What vehicle would be the most practical for transporting a whole family and luggage?"
+  },
+  {
+    "id": "essential_app",
+    "category": "Technology",
+    "icon": "📲",
+    "normalQuestion": "What is the most useful or essential app installed on your smartphone?",
+    "imposterQuestion": "What is the most entertaining or addictive time-waster app on your smartphone?"
+  },
+  {
+    "id": "procrastinate_task",
+    "category": "Daily Life",
+    "icon": "⏳",
+    "normalQuestion": "What is a boring task or errand that people constantly procrastinate doing?",
+    "imposterQuestion": "What is a stressful task or event that people dread dealing with on Sunday night?"
+  },
+  {
+    "id": "must_learn_skill",
+    "category": "Life Skills",
+    "icon": "🎓",
+    "normalQuestion": "What is a practical life skill that every adult should know how to do?",
+    "imposterQuestion": "What is an essential survival skill if you got stranded in the wild?"
+  },
+  {
+    "id": "competitive_activity",
+    "category": "Games & Fun",
+    "icon": "🎲",
+    "normalQuestion": "What is a casual game or activity that people get ridiculously competitive about?",
+    "imposterQuestion": "What is a sport or competition that requires the most intense physical endurance?"
+  },
+  {
+    "id": "hot_day_drink",
+    "category": "Drinks",
+    "icon": "🍹",
+    "normalQuestion": "What is the most refreshing drink on a scorching 95-degree summer afternoon?",
+    "imposterQuestion": "What is a classic cocktail or drink you order while on vacation at a tropical resort?"
+  },
+  {
+    "id": "leaving_check",
+    "category": "Habits",
+    "icon": "🔑",
+    "normalQuestion": "What is something you always double-check before walking out the front door of your house?",
+    "imposterQuestion": "What is something you always double-check before checking out of a hotel room?"
+  },
+  {
+    "id": "useless_purchase",
+    "category": "Shopping",
+    "icon": "🛍️",
+    "normalQuestion": "What is a purchase that people often regret buying almost immediately?",
+    "imposterQuestion": "What is an expensive gadget that people only end up using once or twice a year?"
+  },
+  {
+    "id": "childhood_toy",
+    "category": "Nostalgia",
+    "icon": "🧸",
+    "normalQuestion": "What is a classic childhood toy or game that almost everyone owned?",
+    "imposterQuestion": "What is a popular playground activity or recess game from elementary school?"
+  },
+  {
+    "id": "night_out",
+    "category": "Nightlife",
+    "icon": "🎉",
+    "normalQuestion": "What is the best place or venue to celebrate someone's 21st birthday?",
+    "imposterQuestion": "What is the best place or venue to host a casual family reunion?"
+  },
+  {
+    "id": "late_night_craving",
+    "category": "Food & Dining",
+    "icon": "🍔",
+    "normalQuestion": "What is the best fast food item to order at 2:00 AM after a late night out?",
+    "imposterQuestion": "What is the best food to pack for a sunny lunchtime picnic in the park?"
+  },
+  {
+    "id": "desert_island_item",
+    "category": "Survival",
+    "icon": "🏝️",
+    "normalQuestion": "What single non-electronic item would you want if stranded on a deserted island?",
+    "imposterQuestion": "What is an essential item you always pack when going on a weekend camping trip?"
+  },
+  {
+    "id": "scary_movie_villain",
+    "category": "Movies & Pop Culture",
+    "icon": "🎬",
+    "normalQuestion": "Who is the most terrifying horror movie monster or villain of all time?",
+    "imposterQuestion": "Who is the most iconic superhero or comic book character of all time?"
+  },
+  {
+    "id": "gross_smell",
+    "category": "Senses",
+    "icon": "🦨",
+    "normalQuestion": "What is the most repulsive or offensive odor in everyday life?",
+    "imposterQuestion": "What is a food with an acquired taste that smells way stronger than it tastes?"
+  },
+  {
+    "id": "first_thing_vacation",
+    "category": "Travel",
+    "icon": "✈️",
+    "normalQuestion": "What is the very first thing you do when you arrive at a luxury vacation hotel?",
+    "imposterQuestion": "What is the first thing you do when you get home after an exhausting workday?"
+  },
+  {
+    "id": "annoying_habit",
+    "category": "Pet Peeves",
+    "icon": "😤",
+    "normalQuestion": "What is the most infuriating habit a roommate could possibly have?",
+    "imposterQuestion": "What is the most annoying thing a passenger can do on a crowded 6-hour flight?"
+  },
+  {
+    "id": "dream_job",
+    "category": "Careers",
+    "icon": "💼",
+    "normalQuestion": "What childhood dream job would actually be exhausting and stressful in real life?",
+    "imposterQuestion": "What job or profession requires the highest amount of bravery and physical risk?"
+  },
+  {
+    "id": "kitchen_appliance",
+    "category": "Home Life",
+    "icon": "🍳",
+    "normalQuestion": "What kitchen appliance or cooking tool do you use almost every single day?",
+    "imposterQuestion": "What kitchen gadget do people buy with good intentions but rarely actually use?"
+  },
+  {
+    "id": "overrated_figure",
+    "category": "Pop Culture",
+    "icon": "⭐",
+    "normalQuestion": "Who is a celebrity or pop culture figure that you think is ridiculously overrated?",
+    "imposterQuestion": "Who is an iconic historical figure you would love to have dinner and a conversation with?"
+  },
+  {
+    "id": "high_school_stereotype",
+    "category": "School Days",
+    "icon": "🎒",
+    "normalQuestion": "What high school club, sport, or clique was the most dramatic and intense?",
+    "imposterQuestion": "What after-school activity or hobby did the cool kids participate in?"
+  },
+  {
+    "id": "guilty_pleasure_snack",
+    "category": "Snacks & Treats",
+    "icon": "🍫",
+    "normalQuestion": "What is a junk food or guilty pleasure snack you could easily devour in one sitting?",
+    "imposterQuestion": "What is a classic snack that parents always pack in children's school lunchboxes?"
+  },
+  {
+    "id": "worst_place_proposal",
+    "category": "Social",
+    "icon": "💍",
+    "normalQuestion": "What is the worst or tackiest location to propose marriage to someone?",
+    "imposterQuestion": "What is the worst place to get stuck waiting for two hours with your phone battery dead?"
+  },
+  {
+    "id": "awkward_moment",
+    "category": "Social",
+    "icon": "👀",
+    "normalQuestion": "What is the most awkward or embarrassing thing that could happen in a packed elevator?",
+    "imposterQuestion": "What is the most embarrassing mistake that could happen while giving a speech to a large crowd?"
+  },
+  {
+    "id": "pet_behavior",
+    "category": "Animals",
+    "icon": "🐶",
+    "normalQuestion": "What is the most impressive trick or command you could teach a smart dog?",
+    "imposterQuestion": "What is the most annoying or destructive habit a house pet can develop?"
+  },
+  {
+    "id": "weekend_activity",
+    "category": "Fun & Leisure",
+    "icon": "☀️",
+    "normalQuestion": "What is your favorite relaxing activity to do outside on a warm, sunny Saturday?",
+    "imposterQuestion": "What outdoor activity would be completely ruined if it started raining cats and dogs?"
+  },
+  {
+    "id": "pizza_topping",
+    "category": "Food & Dining",
+    "icon": "🍕",
+    "normalQuestion": "What is the most controversial pizza topping that people passionately argue about?",
+    "imposterQuestion": "What is the best vegetable or topping to add to a fresh, crisp garden salad?"
+  },
+  {
+    "id": "car_accessory",
+    "category": "Vehicles",
+    "icon": "🚘",
+    "normalQuestion": "What is an essential item that every smart driver keeps in their car's glovebox or trunk?",
+    "imposterQuestion": "What is an essential item you always make sure is in your backpack or purse when leaving home?"
+  },
+  {
+    "id": "olympic_sport",
+    "category": "Sports",
+    "icon": "🥇",
+    "normalQuestion": "What Olympic sport looks surprisingly easy on television but is actually brutally difficult?",
+    "imposterQuestion": "What extreme sport looks terrifying to try and carries the highest risk of injury?"
+  },
+  {
+    "id": "rainy_day_activity",
+    "category": "Cozy Life",
+    "icon": "🌧️",
+    "normalQuestion": "What is the coziest activity to do while staying indoors on a stormy winter day?",
+    "imposterQuestion": "What is the best indoor game or activity to keep energetic children entertained all day?"
+  },
+  {
+    "id": "music_vibe",
+    "category": "Music",
+    "icon": "🎵",
+    "normalQuestion": "What music genre or style is best for hyping you up during a heavy workout?",
+    "imposterQuestion": "What music genre or style is best for setting a chill background vibe in a hipster coffee shop?"
+  },
+  {
+    "id": "time_travel_era",
+    "category": "Hypothetical",
+    "icon": "⏳",
+    "normalQuestion": "What historical era would be the most fascinating to visit for just 24 hours?",
+    "imposterQuestion": "What historical era would be the most miserable and dangerous to actually be born into?"
+  },
+  {
+    "id": "grocery_aisle",
+    "category": "Shopping",
+    "icon": "🛒",
+    "normalQuestion": "What aisle or department of the supermarket do you spend the most time browsing?",
+    "imposterQuestion": "What section of a retail or convenience store has the most tempting impulse purchases?"
+  },
+  {
+    "id": "coffee_order",
+    "category": "Drinks",
+    "icon": "☕",
+    "normalQuestion": "What is your favorite customized drink order when visiting a specialty coffee shop?",
+    "imposterQuestion": "What beverage do you reach for when you need an immediate boost of caffeine or energy?"
+  },
+  {
+    "id": "disappointing_gift",
+    "category": "Holidays",
+    "icon": "🎁",
+    "normalQuestion": "What is the most disappointing or low-effort holiday gift to unwrap from a relative?",
+    "imposterQuestion": "What is a funny novelty or gag item people bring to a White Elephant gift exchange?"
+  },
+  {
+    "id": "board_game_fights",
+    "category": "Games & Fun",
+    "icon": "🎲",
+    "normalQuestion": "What board game has triggered the most heated arguments among competitive family members?",
+    "imposterQuestion": "What party or card game is the easiest to teach a group of brand-new players?"
+  },
+  {
+    "id": "zombie_weapon",
+    "category": "Hypothetical",
+    "icon": "🧟",
+    "normalQuestion": "What ordinary household or garage object would make the best makeshift zombie weapon?",
+    "imposterQuestion": "What heavy tool or piece of equipment would you expect to find inside a mechanic's workshop?"
+  },
+  {
+    "id": "whisper_in_bed",
+    "category": "After Dark (18+)",
+    "icon": "🌶️",
+    "normalQuestion": "What is something you would hate to hear your partner whisper in bed?",
+    "imposterQuestion": "What is something you would hate to hear a dentist say while examining your teeth?"
+  },
+  {
+    "id": "dating_red_flag",
+    "category": "After Dark (18+)",
+    "icon": "🚩",
+    "normalQuestion": "What is an immediate red flag on someone's dating app profile?",
+    "imposterQuestion": "What is an immediate red flag on someone's resume or job application?"
+  },
+  {
+    "id": "one_night_stand_find",
+    "category": "After Dark (18+)",
+    "icon": "🛏️",
+    "normalQuestion": "What is the weirdest or most alarming thing to spot in someone's bedroom on a one-night stand?",
+    "imposterQuestion": "What is the grossest thing to find in a cheap roadside motel bathroom?"
+  },
+  {
+    "id": "college_frat_mouth",
+    "category": "After Dark (18+)",
+    "icon": "🍺",
+    "normalQuestion": "What is something you should definitely never put in your mouth at a wild college party?",
+    "imposterQuestion": "What is something you should never put in your mouth at a suspicious seafood buffet?"
+  },
+  {
+    "id": "walk_of_shame_excuse",
+    "category": "After Dark (18+)",
+    "icon": "🚶",
+    "normalQuestion": "What is a funny excuse someone gives while doing the 'walk of shame' the morning after?",
+    "imposterQuestion": "What is an excuse someone gives when arriving two hours late to Sunday brunch with their parents?"
+  },
+  {
+    "id": "sex_and_fastfood",
+    "category": "After Dark (18+)",
+    "icon": "🍔",
+    "normalQuestion": "What is a phrase you could say both in the bedroom and at a fast-food drive-thru?",
+    "imposterQuestion": "What is a phrase you could say both during a tough job interview and when negotiating at a car dealership?"
+  },
+  {
+    "id": "behind_closed_doors",
+    "category": "After Dark (18+)",
+    "icon": "🔒",
+    "normalQuestion": "What is something embarrassing that people only do when the bedroom door is locked and blinds are drawn?",
+    "imposterQuestion": "What is something embarrassing people do when they mistakenly think their work Zoom camera is turned off?"
+  },
+  {
+    "id": "walk_in_on_you",
+    "category": "After Dark (18+)",
+    "icon": "🚪",
+    "normalQuestion": "What is the absolute worst thing your parents could walk in on you doing in your bedroom?",
+    "imposterQuestion": "What is the absolute worst thing your boss could catch you doing at the office?"
+  },
+  {
+    "id": "cringe_bedroom_nickname",
+    "category": "After Dark (18+)",
+    "icon": "💬",
+    "normalQuestion": "What is the most cringe-inducing nickname a partner could call you in bed?",
+    "imposterQuestion": "What is an absurdly exaggerated nickname someone might give their tiny handbag dog?"
+  },
+  {
+    "id": "awkward_itch",
+    "category": "After Dark (18+)",
+    "icon": "😬",
+    "normalQuestion": "What is the most awkward or uncomfortable place on your body to suddenly get an intense itch in public?",
+    "imposterQuestion": "What is the most painful place on your body to get a tattoo you will probably regret?"
+  },
+  {
+    "id": "hide_under_bed",
+    "category": "After Dark (18+)",
+    "icon": "📦",
+    "normalQuestion": "What is something you would frantically shove under your bed if your conservative parents visited unannounced?",
+    "imposterQuestion": "What is something you would frantically hide in a closet if your landlord came for a surprise inspection?"
+  },
+  {
+    "id": "trashy_outfit",
+    "category": "After Dark (18+)",
+    "icon": "👗",
+    "normalQuestion": "What is the trashiest piece of clothing someone could wear to a high-end Vegas nightclub?",
+    "imposterQuestion": "What is the trashiest piece of clothing someone could wear to their younger sibling's high school graduation?"
+  },
+  {
+    "id": "morning_after_regret",
+    "category": "After Dark (18+)",
+    "icon": "🤦",
+    "normalQuestion": "What is something that feels thrilling at 2:00 AM but leads to overwhelming regret the next morning?",
+    "imposterQuestion": "What is an impulse purchase that looks tempting at 2:00 AM online but leads to immediate buyer's remorse?"
+  },
+  {
+    "id": "search_history",
+    "category": "After Dark (18+)",
+    "icon": "🔍",
+    "normalQuestion": "What search query in your browser history would be the hardest to explain to your family?",
+    "imposterQuestion": "What bizarre conspiracy theory or weird topic do you fall down a rabbit hole reading about at 3:00 AM?"
+  },
+  {
+    "id": "terrible_pickup_line",
+    "category": "After Dark (18+)",
+    "icon": "😏",
+    "normalQuestion": "What is a pickup line so shameless or cheesy that it has a zero percent success rate?",
+    "imposterQuestion": "What is a cheesy dad joke that is so bad it actually hurts to listen to?"
+  },
+  {
+    "id": "scandalous_confession",
+    "category": "After Dark (18+)",
+    "icon": "🤫",
+    "normalQuestion": "What is the most scandalous confession someone could make during a game of Never Have I Ever?",
+    "imposterQuestion": "What is the most dramatic betrayal or secret that has destroyed a tight-knit friend group?"
+  },
+  {
+    "id": "wash_before_using",
+    "category": "After Dark (18+)",
+    "icon": "🧼",
+    "normalQuestion": "What is an item you would definitely want to sanitize and disinfect thoroughly before ever using it?",
+    "imposterQuestion": "What is an item you should inspect with extreme scrutiny before buying second-hand on Craigslist?"
+  },
+  {
+    "id": "adult_vs_sports",
+    "category": "After Dark (18+)",
+    "icon": "🥋",
+    "normalQuestion": "What phrase sounds like an adventurous bedroom position, but is actually a wrestling or yoga technique?",
+    "imposterQuestion": "What is an over-the-top, outrageously named cocktail you might see on the menu at a tropical beach bar?"
+  },
+  {
+    "id": "bachelorette_gift",
+    "category": "After Dark (18+)",
+    "icon": "🎉",
+    "normalQuestion": "What is a hilariously inappropriate or raunchy gag gift to bring to a wild bachelorette party?",
+    "imposterQuestion": "What is the worst, most thoughtless gift someone could bring to a formal baby shower?"
+  },
+  {
+    "id": "nightstand_drawer",
+    "category": "After Dark (18+)",
+    "icon": "🗄️",
+    "normalQuestion": "What is something spicy or suspicious that you might find in someone's top bedside nightstand drawer?",
+    "imposterQuestion": "What is something surprising you might find tucked inside the nightstand drawer of an Airbnb or hotel room?"
+  }
+]

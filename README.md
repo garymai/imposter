@@ -6,29 +6,25 @@ Players join on their own smartphones via a 4-letter room code (Jackbox-style) o
 
 ---
 
-## 🎮 How to Play
+## 🎮 Game Modes
 
-1. **Host a Room**:
-   - The host opens the app and clicks **"Host Game"**.
-   - A unique **4-letter room code** (e.g. `GAME`) and **QR code** appear on the screen.
-2. **Players Join**:
-   - Friends scan the QR code with their phone cameras or go to the URL, enter their nickname, pick an avatar, and enter the code.
-3. **Phase 1: Secret Roles**:
-   - Innocents see the Category & Secret Word (e.g., Category: *Food*, Word: *Pizza*).
-   - Imposter(s) see the Category and `"YOU ARE THE IMPOSTER"`.
-   - Built-in **"Press & Hold to Peek"** prevents nearby friends from peeking at your screen.
-4. **Phase 2: Clue Round**:
-   - Players take turns (in randomized order shown on screen) giving a 1-word or short clue.
-   - Innocents want to prove they know the word without giving it away to the Imposter.
-   - Imposters listen carefully and try to blend in!
-5. **Phase 3: Discussion & Voting**:
-   - **1-Imposter Mode**: Each player casts 1 vote.
-   - **2-Imposter Mode**: Each player selects **2 distinct suspects**. The top 2 suspects with the most votes are selected!
-6. **Phase 4: Reveal & Imposter's Last Stand**:
-   - If an Innocent is eliminated, the Imposters win!
-   - If the Imposter(s) are caught, they get **one final attempt to guess the secret word** to steal the victory.
-7. **Rematch**:
-   - Host clicks **"Play Again"** to seamlessly start a new round with the same group.
+### 1. 🕵️ Classic Word Mode
+- **Secret Roles**: Innocents see the Secret Word (e.g., *Pizza*); Imposter(s) see only the category.
+- **Clue Round**: Players take turns giving a 1-word or short clue aloud.
+- **Discussion & Voting**: Vote out who you believe is the Imposter.
+- **Last Stand**: If caught, the Imposter gets one chance to guess the secret word to steal the win!
+
+### 2. ❓ Question Imposter Mode (New!)
+- **Secret Questions**: Everyone gets a secret question and types in their answer.
+  - Innocents receive the **Normal Question** (e.g., *"What is an essential item you always pack for an overnight trip?"*).
+  - The Imposter receives a subtly different **Imposter Question** (e.g., *"What is an essential item you always bring for a full day at the beach?"*).
+  - **Blind Imposter**: Nobody knows who the Imposter is while typing!
+- **Reveal & Discussion**: The Normal Question is revealed to everyone, and all submitted answers are displayed with player names and avatars. The group discusses and cross-examines suspicious answers!
+- **Results**: Reveals the Imposter and unveils both the Normal Question and the secret Imposter Question side-by-side!
+- **✍️ Player-Submitted Questions**: Any player can submit custom question pairs (Normal + Imposter) from the lobby!
+  - **Fairness Guarantee**: If a player's custom question is selected, that player is **guaranteed to be an Innocent** (excluded from being chosen as Imposter).
+  - **Author Attribution**: Reveals *"⭐ Prompt by [PlayerName]"* during discussion & results.
+  - **Saved Templates**: Questions you submit are automatically saved locally on your device for future games.
 
 ---
 

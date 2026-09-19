@@ -60,15 +60,45 @@ export default function Results() {
             {winReason}
           </p>
 
-          {/* Revealed Secret Word */}
-          <div className="mt-5 p-3.5 bg-slate-950/80 border border-slate-800 rounded-2xl inline-block w-full">
-            <span className="text-xs uppercase tracking-widest font-semibold text-slate-500 block mb-1">
-              The Secret Word Was
-            </span>
-            <span className="text-2xl sm:text-3xl font-black text-white tracking-wider">
-              {secretWord}
-            </span>
-          </div>
+          {/* Revealed Secret Word OR Paired Questions */}
+          {gameState?.settings?.gameMode === 'questions' ? (
+            <div className="mt-5 space-y-2.5 text-left">
+              <div className="p-3.5 bg-slate-950/90 border border-slate-800 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-widest font-black text-emerald-400 block mb-0.5">
+                  🛡️ Normal Question (Innocents)
+                </span>
+                <span className="text-sm sm:text-base font-bold text-white block leading-snug">
+                  "{gameState.revealedQuestion}"
+                </span>
+              </div>
+              <div className="p-3.5 bg-slate-950/90 border border-rose-500/40 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-widest font-black text-rose-400 block mb-0.5">
+                  🕵️‍♂️ Imposter Question (Secret)
+                </span>
+                <span className="text-sm sm:text-base font-bold text-rose-200 block leading-snug">
+                  "{gameState.imposterQuestion}"
+                </span>
+              </div>
+
+              {gameState?.questionAuthor && (
+                <div className="text-center pt-1">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold">
+                    <span>⭐</span>
+                    <span>Prompt written by {gameState.questionAuthor}</span>
+                  </span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="mt-5 p-3.5 bg-slate-950/80 border border-slate-800 rounded-2xl inline-block w-full">
+              <span className="text-xs uppercase tracking-widest font-semibold text-slate-500 block mb-1">
+                The Secret Word Was
+              </span>
+              <span className="text-2xl sm:text-3xl font-black text-white tracking-wider">
+                {secretWord}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Players & Roles Breakdown */}
@@ -93,15 +123,15 @@ export default function Results() {
                       : 'bg-slate-900 border-slate-800'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{player.avatar}</span>
-                    <div>
+                  <div className="flex items-center gap-3 flex-1 overflow-hidden pr-2">
+                    <span className="text-2xl flex-shrink-0">{player.avatar}</span>
+                    <div className="flex-1 overflow-hidden">
                       <div className="flex items-center gap-1.5">
-                        <h5 className="font-bold text-white text-sm">
+                        <h5 className="font-bold text-white text-sm truncate">
                           {player.name}
                         </h5>
                         {player.id === gameState.myPlayerId && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 flex-shrink-0">
                             You
                           </span>
                         )}
@@ -122,11 +152,19 @@ export default function Results() {
                           </span>
                         )}
                       </div>
+
+                      {/* Display answer if in question mode */}
+                      {player.answer && (
+                        <div className="mt-1.5 px-2.5 py-1 bg-slate-950/80 rounded-lg border border-slate-800/80 text-xs text-slate-200">
+                          <span className="text-slate-400 font-semibold text-[10px] block">Answer:</span>
+                          <span className="font-bold">"{player.answer}"</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   {/* Vote Count Badge */}
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold flex-shrink-0">
                     <Vote className="w-3.5 h-3.5 text-slate-400" />
                     <span className="text-slate-200">{votesReceived} vote{votesReceived !== 1 ? 's' : ''}</span>
                   </div>

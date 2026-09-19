@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '../context/SocketContext';
-import { Crown, Users, Play, Settings2, QrCode, Copy, Check, Sparkles, AlertCircle, LogOut } from 'lucide-react';
+import { Crown, Users, Play, Settings2, QrCode, Copy, Check, Sparkles, AlertCircle, LogOut, PenTool, Star } from 'lucide-react';
 import QRCodeModal from './QRCodeModal';
+import CustomQuestionModal from './CustomQuestionModal';
 
 const AVATARS = ['🦊', '🐱', '🐶', '🦁', '🐼', '🐨', '🦄', '🐸', '🐵', '🐙', '🦉', '🐯'];
 
@@ -22,6 +23,7 @@ export default function Lobby() {
   const [avatar, setAvatar] = useState(AVATARS[0]);
   const [showQR, setShowQR] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showCustomModal, setShowCustomModal] = useState(false);
 
   // Check URL query parameters for ?room=ABCD
   useEffect(() => {
@@ -232,13 +234,51 @@ export default function Lobby() {
 
         {/* Host Game Settings */}
         {isHost ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 mb-6 shadow-xl">
-            <div className="flex items-center gap-2 mb-4 text-slate-300">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 mb-6 shadow-xl space-y-4">
+            <div className="flex items-center gap-2 text-slate-300">
               <Settings2 className="w-5 h-5 text-rose-400" />
               <h3 className="font-bold text-base">Game Settings (Host)</h3>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Game Mode Selector */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                Game Mode
+              </label>
+              <div className="grid grid-cols-2 gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => updateSettings({ gameMode: 'classic' })}
+                  className={`py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition ${
+                    (gameState.settings.gameMode || 'classic') === 'classic'
+                      ? 'bg-rose-500 text-white shadow-md shadow-rose-500/25'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <span>🕵️</span>
+                  <span>Classic Word</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateSettings({ gameMode: 'questions' })}
+                  className={`py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition ${
+                    gameState.settings.gameMode === 'questions'
+                      ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/25'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <span>❓</span>
+                  <span>Question Imposter</span>
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-1.5 px-1">
+                {gameState.settings.gameMode === 'questions'
+                  ? '❓ Everyone answers their secret question. Imposter gets a slightly different question. Then debate who gave the odd answer!'
+                  : '🕵️ Innocents see the secret word. Imposter bluffs without knowing it!'}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1 border-t border-slate-800/80">
               {/* Number of Imposters (1 or 2) */}
               <div>
                 <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
@@ -250,7 +290,7 @@ export default function Lobby() {
                     onClick={() => updateSettings({ imposterCount: 1 })}
                     className={`py-2 rounded-xl font-bold text-sm transition ${
                       gameState.settings.imposterCount === 1
-                        ? 'bg-rose-500 text-white shadow-md'
+                        ? gameState.settings.gameMode === 'questions' ? 'bg-indigo-600 text-white shadow-md' : 'bg-rose-500 text-white shadow-md'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -261,7 +301,7 @@ export default function Lobby() {
                     onClick={() => updateSettings({ imposterCount: 2 })}
                     className={`py-2 rounded-xl font-bold text-sm transition ${
                       gameState.settings.imposterCount === 2
-                        ? 'bg-rose-500 text-white shadow-md'
+                        ? gameState.settings.gameMode === 'questions' ? 'bg-indigo-600 text-white shadow-md' : 'bg-rose-500 text-white shadow-md'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -278,31 +318,83 @@ export default function Lobby() {
               {/* Category Pack */}
               <div>
                 <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                  Category Pack
+                  {gameState.settings.gameMode === 'questions' ? 'Question Category' : 'Word Category'}
                 </label>
-                <select
-                  value={gameState.settings.categoryId}
-                  onChange={(e) => updateSettings({ categoryId: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-white text-sm font-semibold focus:outline-none focus:border-rose-500 cursor-pointer"
-                >
-                  <option value="all">🎲 Random / All Categories</option>
-                  {gameState.categories?.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.icon} {c.name}
-                    </option>
-                  ))}
-                </select>
+                {gameState.settings.gameMode === 'questions' ? (
+                  <select
+                    value={gameState.settings.questionCategoryId || 'all'}
+                    onChange={(e) => updateSettings({ questionCategoryId: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-white text-sm font-semibold focus:outline-none focus:border-indigo-500 cursor-pointer"
+                  >
+                    <option value="all">🎲 Random / All Topics</option>
+                    {gameState.questionCategories?.map((catName) => (
+                      <option key={catName} value={catName}>
+                        {catName}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <select
+                    value={gameState.settings.categoryId}
+                    onChange={(e) => updateSettings({ categoryId: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-white text-sm font-semibold focus:outline-none focus:border-rose-500 cursor-pointer"
+                  >
+                    <option value="all">🎲 Random / All Categories</option>
+                    {gameState.categories?.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.icon} {c.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
             </div>
           </div>
         ) : (
-          <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 mb-6 text-sm text-slate-400 flex items-center justify-between">
-            <span>
-              Mode: <strong className="text-slate-200">{gameState.settings.imposterCount} Imposter{gameState.settings.imposterCount > 1 ? 's' : ''}</strong>
-            </span>
-            <span>
-              Category: <strong className="text-slate-200">{gameState.settings.categoryId === 'all' ? '🎲 Random' : gameState.settings.categoryId}</strong>
-            </span>
+          <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 mb-6 text-sm text-slate-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              Mode: <strong className="text-slate-200">
+                {gameState.settings.gameMode === 'questions' ? '❓ Question Imposter' : '🕵️ Classic Word'}
+              </strong>{' '}
+              ({gameState.settings.imposterCount} Imposter{gameState.settings.imposterCount > 1 ? 's' : ''})
+            </div>
+            <div>
+              Topic: <strong className="text-slate-200">
+                {gameState.settings.gameMode === 'questions'
+                  ? (gameState.settings.questionCategoryId === 'all' || !gameState.settings.questionCategoryId ? '🎲 All Topics' : gameState.settings.questionCategoryId)
+                  : (gameState.settings.categoryId === 'all' ? '🎲 Random' : gameState.settings.categoryId)}
+              </strong>
+            </div>
+          </div>
+        )}
+
+        {/* Custom Questions Banner (Question Mode) */}
+        {gameState.settings.gameMode === 'questions' && (
+          <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border border-amber-500/30 rounded-3xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl flex-shrink-0">
+                ✍️
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm">
+                  Add Your Own Question Pairs!
+                </h4>
+                <p className="text-xs text-slate-400">
+                  {gameState.customQuestionsCount > 0
+                    ? `⭐ ${gameState.customQuestionsCount} custom question${gameState.customQuestionsCount !== 1 ? 's' : ''} added to this room`
+                    : 'Submit inside-joke questions for your group to play!'}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowCustomModal(true)}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5 transition active:scale-[0.98] flex-shrink-0"
+            >
+              <PenTool className="w-4 h-4" />
+              <span>Submit Questions</span>
+            </button>
           </div>
         )}
 
@@ -386,6 +478,12 @@ export default function Lobby() {
         onClose={() => setShowQR(false)}
         roomCode={gameState.code}
         serverIp={gameState.serverIp}
+      />
+
+      {/* Custom Questions Modal */}
+      <CustomQuestionModal
+        isOpen={showCustomModal}
+        onClose={() => setShowCustomModal(false)}
       />
     </div>
   );

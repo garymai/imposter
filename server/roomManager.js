@@ -2,15 +2,44 @@ const fs = require('fs');
 const path = require('path');
 const { getLocalIpAddress } = require('./networkUtils');
 
-// Load curated words
+// Load curated words & questions
 const categoriesData = JSON.parse(
   fs.readFileSync(path.join(__dirname, 'words.json'), 'utf-8')
 );
+const questionsData = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'questions.json'), 'utf-8')
+);
+const questionCategories = Array.from(new Set(questionsData.map(q => q.category)));
+
+// Path to persistent custom questions storage
+const CUSTOM_QUESTIONS_PATH = path.join(__dirname, 'custom_questions.json');
+
+function loadCustomQuestions() {
+  try {
+    if (fs.existsSync(CUSTOM_QUESTIONS_PATH)) {
+      const content = fs.readFileSync(CUSTOM_QUESTIONS_PATH, 'utf-8');
+      const data = JSON.parse(content);
+      if (Array.isArray(data)) return data;
+    }
+  } catch (err) {
+    console.warn('Could not load custom_questions.json:', err.message);
+  }
+  return [];
+}
+
+function saveCustomQuestions(questions) {
+  try {
+    fs.writeFileSync(CUSTOM_QUESTIONS_PATH, JSON.stringify(questions, null, 2), 'utf-8');
+  } catch (err) {
+    console.error('Could not save custom_questions.json:', err.message);
+  }
+}
 
 class RoomManager {
   constructor() {
     this.rooms = new Map(); // roomCode -> roomData
     this.socketToRoom = new Map(); // socketId -> roomCode
+    this.persistentCustomQuestions = loadCustomQuestions();
   }
 
   generateRoomCode() {
@@ -41,14 +70,19 @@ class RoomManager {
       hostId: hostSocketId,
       players: [hostPlayer],
       settings: {
+        gameMode: 'classic', // 'classic' | 'questions'
         imposterCount: 1, // 1 or 2
         categoryId: 'all', // 'all' or category id
+        questionCategoryId: 'all', // 'all' or category name
         discussionTime: 90, // seconds
         allowImposterTeammateReveal: true // whether 2 imposters know each other
       },
-      phase: 'lobby', // 'lobby' | 'role_reveal' | 'clue_round' | 'voting' | 'imposter_guess' | 'results'
+      phase: 'lobby', // 'lobby' | 'role_reveal' | 'clue_round' | 'question_answering' | 'question_reveal' | 'voting' | 'imposter_guess' | 'results'
       currentCategory: null,
       currentWord: null,
+      currentQuestionPair: null,
+      answers: {}, // playerId -> string
+      customQuestions: (this.persistentCustomQuestions || []).map(q => ({ ...q })), // array of { id, authorId, authorName, category, icon, normalQuestion, imposterQuestion, isCustom }
       imposterIds: [],
       clueOrder: [],
       currentClueIndex: 0,
@@ -169,17 +203,109 @@ class RoomManager {
     if (room.hostId !== requesterId) return { error: 'Only the host can modify settings' };
     if (room.phase !== 'lobby') return { error: 'Settings can only be changed in the lobby' };
 
+    if (newSettings.gameMode === 'classic' || newSettings.gameMode === 'questions') {
+      room.settings.gameMode = newSettings.gameMode;
+    }
     if (typeof newSettings.imposterCount === 'number') {
       room.settings.imposterCount = Math.max(1, Math.min(2, newSettings.imposterCount));
     }
     if (newSettings.categoryId) {
       room.settings.categoryId = newSettings.categoryId;
     }
+    if (newSettings.questionCategoryId) {
+      room.settings.questionCategoryId = newSettings.questionCategoryId;
+    }
     if (typeof newSettings.discussionTime === 'number') {
       room.settings.discussionTime = Math.max(30, Math.min(300, newSettings.discussionTime));
     }
     if (typeof newSettings.allowImposterTeammateReveal === 'boolean') {
       room.settings.allowImposterTeammateReveal = newSettings.allowImposterTeammateReveal;
+    }
+
+    return { room };
+  }
+
+  addCustomQuestion(roomCode, socketId, { normalQuestion, imposterQuestion }) {
+    const room = this.rooms.get(roomCode);
+    if (!room) return { error: 'Room not found' };
+    if (room.phase !== 'lobby') return { error: 'Custom questions can only be added in the lobby' };
+
+    const cleanNormal = (normalQuestion || '').trim();
+    const cleanImposter = (imposterQuestion || '').trim();
+
+    if (!cleanNormal || !cleanImposter) {
+      return { error: 'Both Normal Question and Imposter Question are required!' };
+    }
+
+    if (cleanNormal.length > 150 || cleanImposter.length > 150) {
+      return { error: 'Questions must be 150 characters or less' };
+    }
+
+    const player = room.players.find(p => p.id === socketId);
+    const authorName = player ? player.name : 'A Player';
+
+    const customPair = {
+      id: `custom_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      authorId: socketId,
+      authorName,
+      category: 'Custom Questions',
+      icon: '⭐',
+      normalQuestion: cleanNormal,
+      imposterQuestion: cleanImposter,
+      isCustom: true,
+      createdAt: new Date().toISOString()
+    };
+
+    if (!room.customQuestions) {
+      room.customQuestions = [];
+    }
+    room.customQuestions.push(customPair);
+
+    // Persist to server custom_questions.json storage
+    if (!this.persistentCustomQuestions) {
+      this.persistentCustomQuestions = [];
+    }
+    const isDuplicate = this.persistentCustomQuestions.some(
+      q =>
+        q.normalQuestion.toLowerCase() === cleanNormal.toLowerCase() &&
+        q.imposterQuestion.toLowerCase() === cleanImposter.toLowerCase()
+    );
+    if (!isDuplicate) {
+      this.persistentCustomQuestions.push(customPair);
+      saveCustomQuestions(this.persistentCustomQuestions);
+    }
+
+    return { room, customPair };
+  }
+
+  removeCustomQuestion(roomCode, socketId, questionId) {
+    const room = this.rooms.get(roomCode);
+    if (!room) return { error: 'Room not found' };
+    if (room.phase !== 'lobby') return { error: 'Custom questions can only be removed in the lobby' };
+
+    if (!room.customQuestions) return { room };
+
+    const index = room.customQuestions.findIndex(q => q.id === questionId);
+    if (index === -1) return { error: 'Question not found' };
+
+    const q = room.customQuestions[index];
+    const player = room.players.find(p => p.id === socketId);
+    const isAuthor =
+      q.authorId === socketId ||
+      (player && q.authorName && q.authorName.toLowerCase() === player.name.toLowerCase());
+
+    if (!isAuthor && room.hostId !== socketId) {
+      return { error: 'You can only remove your own submitted questions' };
+    }
+
+    room.customQuestions.splice(index, 1);
+
+    // Remove from persistent storage and save
+    if (this.persistentCustomQuestions) {
+      this.persistentCustomQuestions = this.persistentCustomQuestions.filter(
+        item => item.id !== questionId
+      );
+      saveCustomQuestions(this.persistentCustomQuestions);
     }
 
     return { room };
@@ -199,7 +325,68 @@ class RoomManager {
       };
     }
 
-    // Select category & word
+    const playerIds = connectedPlayers.map(p => p.id);
+
+    if (room.settings.gameMode === 'questions') {
+      const customQuestions = room.customQuestions || [];
+      let qPool = questionsData;
+
+      if (room.settings.questionCategoryId === 'Custom Questions') {
+        if (customQuestions.length === 0) {
+          return { error: 'No custom questions submitted yet! Submit one first or choose another topic.' };
+        }
+        qPool = customQuestions;
+      } else if (room.settings.questionCategoryId && room.settings.questionCategoryId !== 'all') {
+        const selected = questionsData.filter(q => q.category === room.settings.questionCategoryId);
+        if (selected.length > 0) qPool = selected;
+      } else {
+        // 'all' topics: include both curated and custom questions
+        qPool = [...customQuestions, ...questionsData];
+      }
+
+      const chosenPair = qPool[Math.floor(Math.random() * qPool.length)];
+
+      // Author Cannot Be Imposter Rule:
+      // If a custom question is chosen, the player who wrote it is guaranteed to be Innocent!
+      let eligibleImposters = connectedPlayers;
+      if (chosenPair.isCustom) {
+        const nonAuthors = connectedPlayers.filter(
+          p =>
+            p.id !== chosenPair.authorId &&
+            p.name.toLowerCase() !== (chosenPair.authorName || '').toLowerCase()
+        );
+        if (nonAuthors.length >= room.settings.imposterCount) {
+          eligibleImposters = nonAuthors;
+        }
+      }
+
+      const eligibleIds = eligibleImposters.map(p => p.id);
+      const shuffledEligible = [...eligibleIds].sort(() => 0.5 - Math.random());
+      const imposterIds = shuffledEligible.slice(0, room.settings.imposterCount);
+
+      room.phase = 'question_answering';
+      room.currentCategory = { id: chosenPair.id, name: chosenPair.category, icon: chosenPair.icon };
+      room.currentQuestionPair = chosenPair;
+      room.currentWord = null;
+      room.answers = {};
+      room.imposterIds = imposterIds;
+      room.clueOrder = [];
+      room.currentClueIndex = 0;
+      room.readyPlayers = new Set();
+      room.votes = {};
+      room.voteResults = null;
+      room.guessOptions = [];
+      room.winner = null;
+      room.winReason = null;
+
+      return { room };
+    }
+
+    // Select Imposters (Classic mode)
+    const shuffledIds = [...playerIds].sort(() => 0.5 - Math.random());
+    const imposterIds = shuffledIds.slice(0, room.settings.imposterCount);
+
+    // Select category & word (Classic mode)
     let categoryPool = categoriesData;
     if (room.settings.categoryId && room.settings.categoryId !== 'all') {
       const selected = categoriesData.find(c => c.id === room.settings.categoryId);
@@ -208,11 +395,6 @@ class RoomManager {
 
     const chosenCat = categoryPool[Math.floor(Math.random() * categoryPool.length)];
     const chosenWord = chosenCat.words[Math.floor(Math.random() * chosenCat.words.length)];
-
-    // Select Imposters
-    const playerIds = connectedPlayers.map(p => p.id);
-    const shuffledIds = [...playerIds].sort(() => 0.5 - Math.random());
-    const imposterIds = shuffledIds.slice(0, room.settings.imposterCount);
 
     // Randomize Clue Turn Order
     const clueOrder = [...playerIds].sort(() => 0.5 - Math.random());
@@ -225,6 +407,8 @@ class RoomManager {
     room.phase = 'role_reveal';
     room.currentCategory = { id: chosenCat.id, name: chosenCat.name, icon: chosenCat.icon };
     room.currentWord = chosenWord;
+    room.currentQuestionPair = null;
+    room.answers = {};
     room.imposterIds = imposterIds;
     room.clueOrder = clueOrder;
     room.currentClueIndex = 0;
@@ -254,6 +438,30 @@ class RoomManager {
     return room;
   }
 
+  submitAnswer(roomCode, socketId, answer) {
+    const room = this.rooms.get(roomCode);
+    if (!room || room.phase !== 'question_answering') {
+      return { error: 'Not in question answering phase' };
+    }
+
+    const cleanAnswer = (answer || '').trim();
+    if (!cleanAnswer) {
+      return { error: 'Answer cannot be empty' };
+    }
+
+    room.answers[socketId] = cleanAnswer;
+
+    // Advance to question reveal / discussion if everyone has answered
+    const connectedPlayers = room.players.filter(p => p.isConnected);
+    const allAnswered = connectedPlayers.every(p => !!room.answers[p.id]);
+
+    if (allAnswered) {
+      room.phase = 'question_reveal';
+    }
+
+    return { room, allAnswered };
+  }
+
   nextClue(roomCode, requesterId) {
     const room = this.rooms.get(roomCode);
     if (!room || room.phase !== 'clue_round') return null;
@@ -269,7 +477,7 @@ class RoomManager {
   startVoting(roomCode, requesterId) {
     const room = this.rooms.get(roomCode);
     if (!room) return null;
-    if (room.hostId !== requesterId && room.phase !== 'clue_round') return null;
+    if (room.hostId !== requesterId && room.phase !== 'clue_round' && room.phase !== 'question_reveal') return null;
 
     room.phase = 'voting';
     room.votes = {};
@@ -380,6 +588,24 @@ class RoomManager {
       allImpostersCaught
     };
 
+    if (room.settings.gameMode === 'questions') {
+      room.phase = 'results';
+      if (allImpostersCaught) {
+        room.winner = 'innocents';
+        room.winReason =
+          room.settings.imposterCount === 2
+            ? 'The Innocents caught both Imposters!'
+            : 'The Innocents identified the Imposter who had the secret question!';
+      } else {
+        room.winner = 'imposters';
+        room.winReason =
+          room.settings.imposterCount === 2
+            ? 'The Imposters blended in! Not all imposters were voted out.'
+            : 'The Imposter successfully blended in and fooled everyone!';
+      }
+      return room;
+    }
+
     if (allImpostersCaught) {
       // Imposters are caught! They get one final chance to guess the secret word
       room.phase = 'imposter_guess';
@@ -431,6 +657,8 @@ class RoomManager {
     room.phase = 'lobby';
     room.currentCategory = null;
     room.currentWord = null;
+    room.currentQuestionPair = null;
+    room.answers = {};
     room.imposterIds = [];
     room.clueOrder = [];
     room.currentClueIndex = 0;
@@ -455,37 +683,91 @@ class RoomManager {
     const player = room.players.find(p => p.id === socketId);
     const isImposter = room.imposterIds.includes(socketId);
     const isHost = room.hostId === socketId;
+    const isQuestionsMode = room.settings.gameMode === 'questions';
 
     // In lobby or after game ends (results), full transparency is allowed
     const showAllSecrets = room.phase === 'results';
 
     let roleInfo = null;
     if (room.phase !== 'lobby') {
-      if (isImposter) {
-        const fellowImposters =
-          room.settings.imposterCount === 2 && room.settings.allowImposterTeammateReveal
-            ? room.players
-                .filter(p => room.imposterIds.includes(p.id) && p.id !== socketId)
-                .map(p => p.name)
-            : [];
-
-        roleInfo = {
-          role: 'imposter',
-          word: showAllSecrets ? room.currentWord : null,
-          category: room.currentCategory,
-          fellowImposters
-        };
+      if (isQuestionsMode) {
+        if (room.phase === 'question_answering') {
+          // Blind Imposter: nobody knows their role during answering
+          roleInfo = {
+            role: 'player',
+            question: isImposter
+              ? room.currentQuestionPair?.imposterQuestion
+              : room.currentQuestionPair?.normalQuestion,
+            category: room.currentCategory,
+            myAnswer: room.answers[socketId] || ''
+          };
+        } else {
+          // Question reveal, voting, or results
+          roleInfo = {
+            role: isImposter ? 'imposter' : 'innocent',
+            myQuestion: isImposter
+              ? room.currentQuestionPair?.imposterQuestion
+              : room.currentQuestionPair?.normalQuestion,
+            category: room.currentCategory,
+            myAnswer: room.answers[socketId] || ''
+          };
+        }
       } else {
-        roleInfo = {
-          role: 'innocent',
-          word: room.currentWord,
-          category: room.currentCategory
-        };
+        // Classic mode
+        if (isImposter) {
+          const fellowImposters =
+            room.settings.imposterCount === 2 && room.settings.allowImposterTeammateReveal
+              ? room.players
+                  .filter(p => room.imposterIds.includes(p.id) && p.id !== socketId)
+                  .map(p => p.name)
+              : [];
+
+          roleInfo = {
+            role: 'imposter',
+            word: showAllSecrets ? room.currentWord : null,
+            category: room.currentCategory,
+            fellowImposters
+          };
+        } else {
+          roleInfo = {
+            role: 'innocent',
+            word: room.currentWord,
+            category: room.currentCategory
+          };
+        }
       }
     }
 
     // Map who has voted without leaking target votes
     const votedPlayerIds = Object.keys(room.votes);
+
+    const playerName = player ? player.name.trim().toLowerCase() : '';
+    const customQuestionsCount = (room.customQuestions || []).length;
+    const myCustomQuestions = (room.customQuestions || [])
+      .filter(
+        q =>
+          q.authorId === socketId ||
+          (playerName && q.authorName && q.authorName.trim().toLowerCase() === playerName)
+      )
+      .map(q => ({
+        id: q.id,
+        normalQuestion: q.normalQuestion,
+        imposterQuestion: q.imposterQuestion
+      }));
+
+    const questionAuthor =
+      room.currentQuestionPair && room.currentQuestionPair.isCustom
+        ? room.currentQuestionPair.authorName
+        : null;
+
+    const dynamicQuestionCategories =
+      customQuestionsCount > 0
+        ? ['Custom Questions', ...questionCategories]
+        : questionCategories;
+
+    const showAnswers =
+      isQuestionsMode &&
+      (room.phase === 'question_reveal' || room.phase === 'voting' || showAllSecrets);
 
     return {
       code: room.code,
@@ -500,6 +782,8 @@ class RoomManager {
         isConnected: p.isConnected,
         ready: room.readyPlayers ? room.readyPlayers.has(p.id) : false,
         hasVoted: votedPlayerIds.includes(p.id),
+        hasAnswered: !!room.answers[p.id],
+        answer: showAnswers ? (room.answers[p.id] || '') : undefined,
         // Reveal imposter role only during results phase
         role: showAllSecrets
           ? room.imposterIds.includes(p.id)
@@ -515,10 +799,25 @@ class RoomManager {
       guessOptions: isImposter || showAllSecrets ? room.guessOptions : [],
       voteResults: room.voteResults,
       secretWord: showAllSecrets ? room.currentWord : null,
+      revealedQuestion: showAnswers && room.currentQuestionPair ? room.currentQuestionPair.normalQuestion : null,
+      imposterQuestion: showAllSecrets && room.currentQuestionPair ? room.currentQuestionPair.imposterQuestion : null,
+      questionAuthor: showAllSecrets ? questionAuthor : null,
+      customQuestionsCount,
+      myCustomQuestions,
+      answers: showAnswers
+        ? room.players.map(p => ({
+            playerId: p.id,
+            name: p.name,
+            avatar: p.avatar,
+            answer: room.answers[p.id] || '',
+            isImposter: showAllSecrets ? room.imposterIds.includes(p.id) : undefined
+          }))
+        : [],
       winner: room.winner,
       winReason: room.winReason,
       serverIp: getLocalIpAddress(),
-      categories: categoriesData.map(c => ({ id: c.id, name: c.name, icon: c.icon }))
+      categories: categoriesData.map(c => ({ id: c.id, name: c.name, icon: c.icon })),
+      questionCategories: dynamicQuestionCategories
     };
   }
 }

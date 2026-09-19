@@ -94,6 +94,32 @@ export const SocketProvider = ({ children }) => {
     socket.emit('player_ready');
   }, [socket]);
 
+  const submitAnswer = useCallback((answer) => {
+    if (!socket) return;
+    socket.emit('submit_answer', { answer }, (res) => {
+      if (res?.error) setError(res.error);
+    });
+  }, [socket]);
+
+  const addCustomQuestion = useCallback((normalQuestion, imposterQuestion, callback) => {
+    if (!socket) return;
+    socket.emit('add_custom_question', { normalQuestion, imposterQuestion }, (res) => {
+      if (res?.error) {
+        setError(res.error);
+        if (typeof callback === 'function') callback(res);
+      } else {
+        if (typeof callback === 'function') callback(res);
+      }
+    });
+  }, [socket]);
+
+  const removeCustomQuestion = useCallback((questionId) => {
+    if (!socket) return;
+    socket.emit('remove_custom_question', { questionId }, (res) => {
+      if (res?.error) setError(res.error);
+    });
+  }, [socket]);
+
   const nextClue = useCallback(() => {
     if (!socket) return;
     socket.emit('next_clue');
@@ -146,6 +172,9 @@ export const SocketProvider = ({ children }) => {
         updateSettings,
         startGame,
         playerReady,
+        submitAnswer,
+        addCustomQuestion,
+        removeCustomQuestion,
         nextClue,
         startVoting,
         submitVote,

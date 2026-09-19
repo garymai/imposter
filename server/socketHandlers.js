@@ -83,6 +83,51 @@ function registerSocketHandlers(io, socket) {
     }
   });
 
+  // 5b. Submit Answer (Question Imposter Mode)
+  socket.on('submit_answer', ({ answer }, callback) => {
+    const roomCode = roomManager.socketToRoom.get(socket.id);
+    if (!roomCode) return;
+
+    const res = roomManager.submitAnswer(roomCode, socket.id, answer);
+    if (res.error) {
+      if (typeof callback === 'function') callback({ error: res.error });
+      return;
+    }
+
+    broadcastRoomState(io, res.room);
+    if (typeof callback === 'function') callback({ success: true });
+  });
+
+  // 5c. Add Custom Question Pair
+  socket.on('add_custom_question', ({ normalQuestion, imposterQuestion }, callback) => {
+    const roomCode = roomManager.socketToRoom.get(socket.id);
+    if (!roomCode) return;
+
+    const res = roomManager.addCustomQuestion(roomCode, socket.id, { normalQuestion, imposterQuestion });
+    if (res.error) {
+      if (typeof callback === 'function') callback({ error: res.error });
+      return;
+    }
+
+    broadcastRoomState(io, res.room);
+    if (typeof callback === 'function') callback({ success: true, customPair: res.customPair });
+  });
+
+  // 5d. Remove Custom Question Pair
+  socket.on('remove_custom_question', ({ questionId }, callback) => {
+    const roomCode = roomManager.socketToRoom.get(socket.id);
+    if (!roomCode) return;
+
+    const res = roomManager.removeCustomQuestion(roomCode, socket.id, questionId);
+    if (res.error) {
+      if (typeof callback === 'function') callback({ error: res.error });
+      return;
+    }
+
+    broadcastRoomState(io, res.room);
+    if (typeof callback === 'function') callback({ success: true });
+  });
+
   // 6. Next Clue / Clues Done
   socket.on('next_clue', () => {
     const roomCode = roomManager.socketToRoom.get(socket.id);

@@ -3,6 +3,8 @@ import { SocketProvider, useSocket } from './context/SocketContext';
 import Lobby from './components/Lobby';
 import RoleCard from './components/RoleCard';
 import ClueRound from './components/ClueRound';
+import QuestionAnswering from './components/QuestionAnswering';
+import QuestionReveal from './components/QuestionReveal';
 import Voting from './components/Voting';
 import ImposterGuess from './components/ImposterGuess';
 import Results from './components/Results';
@@ -21,6 +23,10 @@ function GameContainer() {
         return <RoleCard />;
       case 'clue_round':
         return <ClueRound />;
+      case 'question_answering':
+        return <QuestionAnswering />;
+      case 'question_reveal':
+        return <QuestionReveal />;
       case 'voting':
         return <Voting />;
       case 'imposter_guess':

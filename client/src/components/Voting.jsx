@@ -71,6 +71,16 @@ export default function Voting() {
             )}
           </p>
 
+          {/* If Question Mode, show reminder of revealed question */}
+          {gameState?.revealedQuestion && (
+            <div className="mt-3 p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-indigo-300">
+              <span className="text-slate-400 font-semibold block text-[10px] uppercase tracking-wider mb-0.5">
+                The Question Was:
+              </span>
+              <span className="font-bold text-white">"{gameState.revealedQuestion}"</span>
+            </div>
+          )}
+
           {/* Selection counter badge */}
           <div className="inline-flex items-center gap-2 mt-3 px-3.5 py-1 rounded-full text-xs font-bold bg-slate-900 border border-slate-800">
             <span>Selected:</span>
@@ -105,18 +115,24 @@ export default function Voting() {
                     : 'bg-slate-900 border-slate-800 hover:border-slate-700'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{player.avatar}</span>
-                  <div>
-                    <h4 className="font-bold text-white text-base leading-tight">
+                <div className="flex items-center gap-3 flex-1 overflow-hidden pr-2">
+                  <span className="text-3xl flex-shrink-0">{player.avatar}</span>
+                  <div className="flex-1 overflow-hidden">
+                    <h4 className="font-bold text-white text-base leading-tight truncate">
                       {player.name}
                     </h4>
-                    <span className="text-xs text-slate-400">Suspect</span>
+                    {player.answer ? (
+                      <div className="mt-1 px-2 py-0.5 bg-slate-950/80 rounded-lg border border-slate-800 text-xs text-slate-200 truncate">
+                        "{player.answer}"
+                      </div>
+                    ) : (
+                      <span className="text-xs text-slate-400">Suspect</span>
+                    )}
                   </div>
                 </div>
 
                 <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center border transition ${
+                  className={`w-6 h-6 rounded-full flex items-center justify-center border flex-shrink-0 transition ${
                     isSelected
                       ? 'bg-rose-500 border-rose-500 text-white'
                       : 'border-slate-700 bg-slate-950'
